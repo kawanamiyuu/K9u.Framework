@@ -1,0 +1,45 @@
+{
+    "name": "k9u/framework",
+    "type": "library",
+    "description": "Web Application Framework for PHP.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yuu Kawanami",
+            "email": "yuu.kawanami@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "phpmd/phpmd": "^2.8",
+        "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": "^9.2",
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "K9u\\Framework\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "K9u\\Framework\\": "tests/"
+        }
+    },
+    "scripts": {
+        "check":["@lint", "@test"],
+        "test": "phpdbg -qrr ./vendor/bin/phpunit --coverage-text",
+        "lint": [
+            "phpcs --standard=PSR12 src",
+            "phpmd src text cleancode,codesize,controversial,design,naming,unusedcode",
+            "phpstan analyze --no-progress --level=max src"
+        ],
+        "fmt": "phpcbf --standard=PSR12 src"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
