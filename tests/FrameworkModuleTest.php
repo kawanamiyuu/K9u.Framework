@@ -5,19 +5,27 @@ declare(strict_types=1);
 namespace K9u\Framework;
 
 use PHPUnit\Framework\TestCase;
-use Ray\Di\Injector;
+use Ray\Compiler\DiCompiler;
 
 class FrameworkModuleTest extends TestCase
 {
+    public function setUp(): void
+    {
+        array_map('unlink', glob(__DIR__ . '/../build/tests/*'));
+    }
+
     public function testCompile(): void
     {
-        $injector = new Injector(new FrameworkModule([
+        $module = new FrameworkModule([
             FakeMiddleware::class,
             FakeRequestHandler::class
-        ]));
+        ]);
 
-        $instance = $injector->getInstance(ApplicationInterface::class);
+        $compiler = new DiCompiler($module, __DIR__ . '/../build/tests');
+        $instance = $compiler->getInstance(ApplicationInterface::class);
 
         $this->assertInstanceOf(ApplicationInterface::class, $instance);
+
+//        $compiler->dumpGraph();
     }
 }

@@ -7,11 +7,9 @@ use Acme\BarMiddleware;
 use Acme\BuzRequestHandler;
 use Acme\FooMiddleware;
 use K9u\Framework\ApplicationInterface;
+use K9u\Framework\CachedInjectorFactory;
 use K9u\Framework\FrameworkModule;
 use Laminas\Diactoros\ServerRequestFactory;
-use Ray\Compiler\ScriptInjector;
-use Ray\Di\Bind;
-use Ray\Di\InjectorInterface;
 
 $module = new FrameworkModule([
     FooMiddleware::class,
@@ -19,13 +17,10 @@ $module = new FrameworkModule([
     BuzRequestHandler::class,
 ]);
 
-$injector = new ScriptInjector('/path/to/cache', function () use (&$injector, $module) {
-    (new Bind($module->getContainer(), InjectorInterface::class))->toInstance($injector);
-    return $module;
-});
+$injector = (new CachedInjectorFactory('/path/to/cache'))($module);
 
 $app = $injector->getInstance(ApplicationInterface::class);
-assert($app instanceof ApplicationInterface);
+/* @var ApplicationInterface $app */
 
 $request = ServerRequestFactory::fromGlobals();
 
