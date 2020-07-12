@@ -16,11 +16,7 @@ class FrameworkModuleTest extends TestCase
 
     public function testCompile(): void
     {
-        $module = new FrameworkModule([
-            FakeMiddleware::class,
-            FakeRequestHandler::class
-        ]);
-
+        $module = new FrameworkModule();
         $compiler = new DiCompiler($module, __DIR__ . '/../build/tests');
         $instance = $compiler->getInstance(ApplicationInterface::class);
 

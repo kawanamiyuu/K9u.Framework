@@ -24,9 +24,9 @@ class FrameworkModule extends AbstractModule
      * @param array<class-string> $middlewares
      * @param AbstractModule|null $module
      */
-    public function __construct(array $middlewares, AbstractModule $module = null)
+    public function __construct(array $middlewares = [], AbstractModule $module = null)
     {
-        $this->middlewares = $middlewares;
+        $this->middlewares = array_merge($middlewares, [FallbackHandler::class]);
         parent::__construct($module);
     }
 
