@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use K9u\Framework\ApplicationInterface;
-use K9u\Framework\AppModule;
 use K9u\Framework\CachedInjectorFactory;
+use K9u\Framework\Demo\AppModule;
 use Laminas\Diactoros\ServerRequestFactory;
 
 const DEMO_ROOT_DIR = __DIR__ . '/..';

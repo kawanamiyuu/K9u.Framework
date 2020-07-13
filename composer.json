@@ -35,7 +35,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "K9u\\Framework\\": ["tests/", "demo/src"]
+            "K9u\\Framework\\": "tests/",
+            "K9u\\Framework\\Demo\\": "demo/src"
         }
     },
     "scripts": {
