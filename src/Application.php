@@ -8,10 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Throwable;
 
-/**
- * @SuppressWarnings("PMD.LongVariable")
- */
-class Application implements ApplicationInterface
+final class Application implements ApplicationInterface
 {
     private RequestHandlerInterface $requestHandler;
 
@@ -19,11 +16,6 @@ class Application implements ApplicationInterface
 
     private ResponseEmitterInterface $responseEmitter;
 
-    /**
-     * @param RequestHandlerInterface   $requestHandler
-     * @param ExceptionHandlerInterface $exceptionHandler
-     * @param ResponseEmitterInterface  $responseEmitter
-     */
     public function __construct(
         RequestHandlerInterface $requestHandler,
         ExceptionHandlerInterface $exceptionHandler,
