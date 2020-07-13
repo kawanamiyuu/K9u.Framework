@@ -8,9 +8,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Throwable;
 
-/**
- * @SuppressWarnings("PMD.LongVariable")
- */
 final class Application implements ApplicationInterface
 {
     private RequestHandlerInterface $requestHandler;
