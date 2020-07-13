@@ -11,7 +11,7 @@ use Throwable;
 /**
  * @SuppressWarnings("PMD.LongVariable")
  */
-class Application implements ApplicationInterface
+final class Application implements ApplicationInterface
 {
     private RequestHandlerInterface $requestHandler;
 
