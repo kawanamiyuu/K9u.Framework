@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace K9u\Framework;
 
 use Laminas\Diactoros\ResponseFactory;
+use Laminas\Diactoros\StreamFactory;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Ray\Di\AbstractModule;
 use Ray\Di\Scope;
@@ -44,6 +46,9 @@ class FrameworkModule extends AbstractModule
 
         $this->bind(ResponseFactoryInterface::class)
             ->to(ResponseFactory::class)->in(Scope::SINGLETON);
+
+        $this->bind(StreamFactoryInterface::class)
+            ->to(StreamFactory::class)->in(Scope::SINGLETON);
 
         $this->bind(ExceptionHandlerInterface::class)
             ->to(ExceptionHandler::class)->in(Scope::SINGLETON);
