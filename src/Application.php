@@ -19,11 +19,6 @@ final class Application implements ApplicationInterface
 
     private ResponseEmitterInterface $responseEmitter;
 
-    /**
-     * @param RequestHandlerInterface   $requestHandler
-     * @param ExceptionHandlerInterface $exceptionHandler
-     * @param ResponseEmitterInterface  $responseEmitter
-     */
     public function __construct(
         RequestHandlerInterface $requestHandler,
         ExceptionHandlerInterface $exceptionHandler,
