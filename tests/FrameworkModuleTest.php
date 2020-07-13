@@ -9,15 +9,17 @@ use Ray\Compiler\DiCompiler;
 
 class FrameworkModuleTest extends TestCase
 {
+    private const CACHE_DIR = __DIR__ . '/cache';
+
     public function setUp(): void
     {
-        array_map('unlink', glob(__DIR__ . '/../build/tests/*'));
+        array_map('unlink', glob(self::CACHE_DIR . '/*'));
     }
 
     public function testCompile(): void
     {
         $module = new FrameworkModule();
-        $compiler = new DiCompiler($module, __DIR__ . '/../build/tests');
+        $compiler = new DiCompiler($module, self::CACHE_DIR);
         $instance = $compiler->getInstance(ApplicationInterface::class);
 
         $this->assertInstanceOf(ApplicationInterface::class, $instance);

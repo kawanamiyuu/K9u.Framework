@@ -1,4 +1,5 @@
-/build/
+/demo/cache/
+/tests/cache/
 /vendor/
 /composer.lock
 /.phpunit.result.cache

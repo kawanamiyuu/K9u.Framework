@@ -35,20 +35,25 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "K9u\\Framework\\": "tests/"
+            "K9u\\Framework\\": ["tests/", "demo/src"]
         }
     },
     "scripts": {
         "check":["@lint", "@test"],
         "test": "phpdbg -qrr ./vendor/bin/phpunit --coverage-text",
         "lint": [
-            "phpcs --standard=PSR12 src",
-            "phpmd src text cleancode,codesize,controversial,design,naming,unusedcode",
-            "phpstan analyze --no-progress --level=max src"
+            "phpcs --standard=PSR12 src demo/src",
+            "phpmd src,demo/src text cleancode,codesize,controversial,design,naming,unusedcode",
+            "phpstan analyze --no-progress --level=max src demo/src"
         ],
-        "fmt": "phpcbf --standard=PSR12 src"
+        "fmt": "phpcbf --standard=PSR12 src demo/src",
+        "serve:demo": [
+            "rm -rf demo/cache",
+            "php -S localhost:8080 -t demo/public"
+        ]
     },
     "config": {
+        "process-timeout": 0,
         "sort-packages": true
     }
 }
