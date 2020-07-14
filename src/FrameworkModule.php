@@ -38,8 +38,8 @@ class FrameworkModule extends AbstractModule
             $this->bind($middleware)->in(Scope::SINGLETON);
         }
 
-        $this->bind(MiddlewareContainer::class)
-            ->toInstance(new MiddlewareContainer($this->middlewares));
+        $this->bind()->annotatedWith(MiddlewareCollection::class)
+            ->toInstance($this->middlewares);
 
         $this->bind(RequestHandlerInterface::class)
             ->toProvider(RequestHandlerProvider::class)->in(Scope::SINGLETON);
