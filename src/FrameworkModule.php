@@ -38,23 +38,23 @@ class FrameworkModule extends AbstractModule
             $this->bind($middleware)->in(Scope::SINGLETON);
         }
 
-        $this->bind(MiddlewareContainer::class)
-            ->toInstance(new MiddlewareContainer($this->middlewares));
+        $this->bind()->annotatedWith(MiddlewareCollection::class)
+            ->toInstance($this->middlewares);
 
         $this->bind(RequestHandlerInterface::class)
             ->toProvider(RequestHandlerProvider::class)->in(Scope::SINGLETON);
-
-        $this->bind(ResponseFactoryInterface::class)
-            ->to(ResponseFactory::class)->in(Scope::SINGLETON);
-
-        $this->bind(StreamFactoryInterface::class)
-            ->to(StreamFactory::class)->in(Scope::SINGLETON);
 
         $this->bind(ExceptionHandlerInterface::class)
             ->to(ExceptionHandler::class)->in(Scope::SINGLETON);
 
         $this->bind(ResponseEmitterInterface::class)
             ->to(ResponseEmitter::class)->in(Scope::SINGLETON);
+
+        $this->bind(ResponseFactoryInterface::class)
+            ->to(ResponseFactory::class)->in(Scope::SINGLETON);
+
+        $this->bind(StreamFactoryInterface::class)
+            ->to(StreamFactory::class)->in(Scope::SINGLETON);
 
         $this->bind(ApplicationInterface::class)
             ->to(Application::class)->in(Scope::SINGLETON);
