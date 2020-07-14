@@ -12,19 +12,28 @@ use Relay\Relay;
 
 class RequestHandlerProvider implements ProviderInterface
 {
-    private MiddlewareContainer $middlewareContainer;
+    /**
+     * @var array<class-string>
+     */
+    private array $middlewares;
 
     private InjectorInterface $injector;
 
-    public function __construct(MiddlewareContainer $middlewareContainer, InjectorInterface $injector)
+    /**
+     * @MiddlewareCollection("middlewares")
+     *
+     * @param array<class-string> $middlewares
+     * @param InjectorInterface   $injector
+     */
+    public function __construct(array $middlewares, InjectorInterface $injector)
     {
-        $this->middlewareContainer = $middlewareContainer;
+        $this->middlewares = $middlewares;
         $this->injector = $injector;
     }
 
     public function get(): RequestHandlerInterface
     {
-        return new Relay($this->middlewareContainer, function ($middleware) {
+        return new Relay($this->middlewares, function ($middleware) {
             $instance = $this->injector->getInstance($middleware);
             assert($instance instanceof MiddlewareInterface || $instance instanceof RequestHandlerInterface);
             return $instance;

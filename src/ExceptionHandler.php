@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace K9u\Framework;
 
+use K9u\RequestMapper\Exception\HandlerNotFoundException;
+use K9u\RequestMapper\Exception\MethodNotAllowedException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,6 +26,17 @@ class ExceptionHandler implements ExceptionHandlerInterface
 
         error_log((string) $throwable);
 
-        return $this->responseFactory->createResponse(505);
+        return $this->responseFactory->createResponse(self::getStatusCode($throwable));
+    }
+
+    private static function getStatusCode(Throwable $throwable): int
+    {
+        if ($throwable instanceof HandlerNotFoundException) {
+            return 404;
+        } elseif ($throwable instanceof MethodNotAllowedException) {
+            return 405;
+        }
+
+        return 500;
     }
 }
