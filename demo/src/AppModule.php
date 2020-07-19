@@ -12,8 +12,7 @@ class AppModule extends AbstractModule
     protected function configure()
     {
         $middlewares = [
-            FakeMiddleware::class,
-            FakeRequestHandler::class
+            FakeMiddleware::class
         ];
 
         $this->install(new FrameworkModule($middlewares));
