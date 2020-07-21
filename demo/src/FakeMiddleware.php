@@ -13,6 +13,12 @@ class FakeMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $handler->handle($request);
+        $response = $handler->handle($request);
+
+        foreach ($request->getHeaders() as $name => $values) {
+            $response = $response->withHeader("X-Request-{$name}", $values);
+        }
+
+        return $response;
     }
 }
