@@ -49,35 +49,11 @@ class FrameworkModule extends AbstractModule
 
     protected function configure(): void
     {
-        $this->bind()->annotatedWith('handler_dir')
-            ->toInstance($this->handlerDir);
+        self::bindHttpFactory($this);
 
-        // TODO: bind `CachedHandlerCollector`
-        $this->bind(HandlerCollectorInterface::class)
-            ->toConstructor(OnDemandHandlerCollector::class, ['baseDir' => 'handler_dir'])
-            ->in(Scope::SINGLETON);
+        self::bindRequestMapper($this, $this->handlerDir);
 
-        $this->bind(HandlerResolverInterface::class)
-            ->to(HandlerResolver::class)->in(Scope::SINGLETON);
-
-        $this->bind(HandlerClassFactoryInterface::class)
-            ->to(HandlerClassFactory::class)->in(Scope::SINGLETON);
-
-        $this->bind(HandlerMethodArgumentsResolverInterface::class)
-            ->to(HandlerMethodArgumentsResolver::class)->in(Scope::SINGLETON);
-
-        $this->bind(HandlerInvokerInterface::class)
-            ->to(HandlerInvoker::class)->in(Scope::SINGLETON);
-
-        foreach ($this->middlewares as $middleware) {
-            $this->bind($middleware)->in(Scope::SINGLETON);
-        }
-
-        $this->bind()->annotatedWith('middleware_collection')
-            ->toInstance($this->middlewares);
-
-        $this->bind(RequestHandlerInterface::class)
-            ->toProvider(RequestHandlerProvider::class)->in(Scope::SINGLETON);
+        self::bindRequestHandler($this, $this->middlewares);
 
         $this->bind(ExceptionHandlerInterface::class)
             ->to(ExceptionHandler::class)->in(Scope::SINGLETON);
@@ -85,13 +61,63 @@ class FrameworkModule extends AbstractModule
         $this->bind(ResponseEmitterInterface::class)
             ->to(ResponseEmitter::class)->in(Scope::SINGLETON);
 
-        $this->bind(ResponseFactoryInterface::class)
-            ->to(ResponseFactory::class)->in(Scope::SINGLETON);
-
-        $this->bind(StreamFactoryInterface::class)
-            ->to(StreamFactory::class)->in(Scope::SINGLETON);
-
         $this->bind(ApplicationInterface::class)
             ->to(Application::class)->in(Scope::SINGLETON);
+    }
+
+    /**
+     * @param AbstractModule $module
+     */
+    private static function bindHttpFactory(AbstractModule $module): void
+    {
+        $module->bind(ResponseFactoryInterface::class)
+            ->to(ResponseFactory::class)->in(Scope::SINGLETON);
+
+        $module->bind(StreamFactoryInterface::class)
+            ->to(StreamFactory::class)->in(Scope::SINGLETON);
+    }
+
+    /**
+     * @param AbstractModule $module
+     * @param string         $handlerDir
+     */
+    private static function bindRequestMapper(AbstractModule $module, string $handlerDir): void
+    {
+        $module->bind()->annotatedWith('handler_dir')
+            ->toInstance($handlerDir);
+
+        // TODO: bind `CachedHandlerCollector`
+        $module->bind(HandlerCollectorInterface::class)
+            ->toConstructor(OnDemandHandlerCollector::class, ['baseDir' => 'handler_dir'])
+            ->in(Scope::SINGLETON);
+
+        $module->bind(HandlerResolverInterface::class)
+            ->to(HandlerResolver::class)->in(Scope::SINGLETON);
+
+        $module->bind(HandlerClassFactoryInterface::class)
+            ->to(HandlerClassFactory::class)->in(Scope::SINGLETON);
+
+        $module->bind(HandlerMethodArgumentsResolverInterface::class)
+            ->to(HandlerMethodArgumentsResolver::class)->in(Scope::SINGLETON);
+
+        $module->bind(HandlerInvokerInterface::class)
+            ->to(HandlerInvoker::class)->in(Scope::SINGLETON);
+    }
+
+    /**
+     * @param AbstractModule      $module
+     * @param array<class-string> $middlewares
+     */
+    private static function bindRequestHandler(AbstractModule $module, array $middlewares): void
+    {
+        foreach ($middlewares as $middleware) {
+            $module->bind($middleware)->in(Scope::SINGLETON);
+        }
+
+        $module->bind()->annotatedWith('middleware_collection')
+            ->toInstance($middlewares);
+
+        $module->bind(RequestHandlerInterface::class)
+            ->toProvider(RequestHandlerProvider::class)->in(Scope::SINGLETON);
     }
 }
