@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace K9u\Framework;
 
 use K9u\RequestMapper\HandlerMethodArgumentsResolverInterface;
+use K9u\RequestMapper\NamedArguments;
 use K9u\RequestMapper\PathParams;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionMethod;
@@ -12,8 +13,12 @@ use ReflectionNamedType;
 
 class HandlerMethodArgumentsResolver implements HandlerMethodArgumentsResolverInterface
 {
-    public function __invoke(ReflectionMethod $method, ServerRequestInterface $request, PathParams $pathParams): array
-    {
+    public function __invoke(
+        ReflectionMethod $method,
+        ServerRequestInterface $request,
+        PathParams $pathParams
+    ): NamedArguments {
+
         $request = $request->withAttribute(PathParams::class, $pathParams);
 
         $args = [];
@@ -23,15 +28,15 @@ class HandlerMethodArgumentsResolver implements HandlerMethodArgumentsResolverIn
                 assert($type instanceof ReflectionNamedType);
 
                 if (is_a($type->getName(), ServerRequestInterface::class, true)) {
-                    $args[] = $request;
+                    $args[$param->getName()] = $request;
                     continue;
                 }
             }
 
             // TODO: assign Path params, Query params, Parsed body, ...
-            $args[] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+            $args[$param->getName()] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
         }
 
-        return $args;
+        return new NamedArguments($args);
     }
 }
