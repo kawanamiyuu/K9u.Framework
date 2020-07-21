@@ -52,6 +52,7 @@ class FrameworkModule extends AbstractModule
         $this->bind()->annotatedWith('handler_dir')
             ->toInstance($this->handlerDir);
 
+        // TODO: bind `CachedHandlerCollector`
         $this->bind(HandlerCollectorInterface::class)
             ->toConstructor(OnDemandHandlerCollector::class, ['baseDir' => 'handler_dir'])
             ->in(Scope::SINGLETON);
