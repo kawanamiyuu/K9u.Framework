@@ -13,6 +13,8 @@
     "minimum-stability": "stable",
     "require": {
         "php": "^7.4",
+        "ext-json": "*",
+        "k9u/request-mapper": "^0.11.0",
         "laminas/laminas-diactoros": "^2.3",
         "laminas/laminas-httphandlerrunner": "^1.2",
         "psr/http-factory": "^1.0",
