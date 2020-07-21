@@ -6,6 +6,7 @@ namespace K9u\Framework;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Ray\Di\Di\Named;
 use Ray\Di\InjectorInterface;
 use Ray\Di\ProviderInterface;
 use Relay\Relay;
@@ -20,7 +21,7 @@ class RequestHandlerProvider implements ProviderInterface
     private InjectorInterface $injector;
 
     /**
-     * @MiddlewareCollection("middlewares")
+     * @Named("middlewares=middleware_collection")
      *
      * @param array<class-string> $middlewares
      * @param InjectorInterface   $injector

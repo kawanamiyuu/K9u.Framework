@@ -72,7 +72,7 @@ class FrameworkModule extends AbstractModule
             $this->bind($middleware)->in(Scope::SINGLETON);
         }
 
-        $this->bind()->annotatedWith(MiddlewareCollection::class)
+        $this->bind()->annotatedWith('middleware_collection')
             ->toInstance($this->middlewares);
 
         $this->bind(RequestHandlerInterface::class)
